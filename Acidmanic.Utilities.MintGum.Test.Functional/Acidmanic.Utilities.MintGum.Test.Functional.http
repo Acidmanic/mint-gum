@@ -1,0 +1,6 @@
+@Acidmanic.Utilities.MintGum.Test.Functional_HostAddress = http://localhost:5128
+
+GET {{Acidmanic.Utilities.MintGum.Test.Functional_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

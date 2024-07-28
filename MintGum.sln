@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acidmanic.Utilities.MintGum", "Acidmanic.Utilities.MintGum\Acidmanic.Utilities.MintGum.csproj", "{720ABA60-A06C-4737-894A-A0F743DC24D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acidmanic.Utilities.MintGum.Test.Functional", "Acidmanic.Utilities.MintGum.Test.Functional\Acidmanic.Utilities.MintGum.Test.Functional.csproj", "{792500AF-0A3B-4B00-826F-3F74ABE38AA8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{58A375B6-5ED3-4695-8567-1E388EABFD16}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{720ABA60-A06C-4737-894A-A0F743DC24D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{720ABA60-A06C-4737-894A-A0F743DC24D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{720ABA60-A06C-4737-894A-A0F743DC24D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{720ABA60-A06C-4737-894A-A0F743DC24D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{792500AF-0A3B-4B00-826F-3F74ABE38AA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{792500AF-0A3B-4B00-826F-3F74ABE38AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{792500AF-0A3B-4B00-826F-3F74ABE38AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{792500AF-0A3B-4B00-826F-3F74ABE38AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
