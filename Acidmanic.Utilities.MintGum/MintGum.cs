@@ -6,15 +6,15 @@ namespace Acidmanic.Utilities.MintGum
 {
     internal class MintGum
     {
-
+        public static readonly string DefaultDefaultFileContent =
+            "<H1>Hello!, Apparently I'm being Updated! will be back soon! :D </H1>";
 
         public IMintGumConfiguration Configuration { get; }
-        
+
         private readonly ILogger _logger;
         public string ServingDirectoryPath { get; private set; } = string.Empty;
 
         public string DefaultPageFilePath { get; private set; } = string.Empty;
-        
 
 
         public MintGum(IMintGumConfiguration configuration, ILogger logger)
@@ -47,8 +47,17 @@ namespace Acidmanic.Utilities.MintGum
 
             return new DirectoryInfo(".").FullName;
         }
- 
-        
+
+
+        public void CreateDefaultIndexFile(string? content = null)
+        {
+            if (!File.Exists(DefaultPageFilePath))
+            {
+                File.WriteAllText(DefaultPageFilePath,
+                    content ?? DefaultDefaultFileContent);
+            }
+        }
+
         public void ConfigurePreRouting(IApplicationBuilder app, IHostEnvironment env)
         {
             InitializePaths(env.ContentRootPath);
@@ -58,11 +67,7 @@ namespace Acidmanic.Utilities.MintGum
                 Directory.CreateDirectory(ServingDirectoryPath);
             }
 
-            if (!File.Exists(DefaultPageFilePath))
-            {
-                File.WriteAllText(DefaultPageFilePath,
-                    "<H1>Hello!, Apparently I'm being Updated! will be back soon! :D </H1>");
-            }
+            CreateDefaultIndexFile();
 
             _logger.LogInformation("Static Pages Root: {Directory}", ServingDirectoryPath);
 

@@ -72,6 +72,14 @@ internal abstract class RequestHandlerBase:IHttpRequestHandler
     }
 
 
+    protected T Inject<T>()
+    {
+        var service = HttpContext.RequestServices.GetService<T>();
+
+        if (service is { } s) return s;
+
+        throw new Exception($"Please add service registration for the type: {typeof(T).FullName}");
+    }
 
 
     protected Task Ok(object response)

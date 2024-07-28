@@ -1,4 +1,5 @@
 using Acidmanic.Utilities.MintGum.Configuration;
+using Acidmanic.Utilities.MintGum.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Acidmanic.Utilities.MintGum.Extensions;
@@ -20,5 +21,8 @@ public static class ServiceCollectionExtensions
 
             return new MintGum(configurationBuilder, logger);
         });
+
+        services.AddScoped<ContentRootService>();
+        
     }
 }
