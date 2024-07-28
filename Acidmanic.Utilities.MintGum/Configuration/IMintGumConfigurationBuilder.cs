@@ -8,7 +8,11 @@ public interface IMintGumConfigurationBuilder
     IMintGumConfigurationBuilder DefaultPage(string fileName);
 
     IMintGumConfigurationBuilder ServingDirectory(string directoryName);
-    
-    
+
+    IMintGumConfigurationBuilder WithMaintenanceApis();
+
+    IMintGumConfigurationBuilder AuthorizeMaintenanceApis(bool authorize = true);
+
+    IMintGumConfigurationBuilder MaintenanceApiBasedOn(string maintenanceApiBaseUri);
 
 }

@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Acidmanic.Utilities" Version="1.0.22-b06" />
+  </ItemGroup>
+
 </Project>

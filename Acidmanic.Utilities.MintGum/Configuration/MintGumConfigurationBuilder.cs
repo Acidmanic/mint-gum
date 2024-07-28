@@ -7,6 +7,8 @@ internal class MintGumConfigurationBuilder:IMintGumConfigurationBuilder,IMintGum
     public static readonly string DefaultServingDirectoryName = "front-end";
     
     public static readonly string DefaultDefaultPageFileName = "Index.html";
+    
+    public static readonly string DefaultMaintenanceApisBaseUri = "api/mint-gum";
 
     public string ServingDirectoryName { get; private set; } = DefaultServingDirectoryName;
 
@@ -14,7 +16,13 @@ internal class MintGumConfigurationBuilder:IMintGumConfigurationBuilder,IMintGum
 
     public bool ServesAngularSpa { get; private set; } = false;
     
+    public bool AddMaintenanceApis { get; private set; } = false;
     
+    public bool MaintenanceApisRequireAuthorization { get; private set; } = true;
+    
+    public string MaintenanceApisBaseUri { get; private set; } = DefaultMaintenanceApisBaseUri;
+
+
     public IMintGumConfigurationBuilder ServeAngularSpa(bool serve = true)
     {
         ServesAngularSpa = serve;
@@ -32,6 +40,27 @@ internal class MintGumConfigurationBuilder:IMintGumConfigurationBuilder,IMintGum
     public IMintGumConfigurationBuilder ServingDirectory(string directoryName)
     {
         ServingDirectoryName = directoryName;
+
+        return this;
+    }
+
+    public IMintGumConfigurationBuilder WithMaintenanceApis()
+    {
+        AddMaintenanceApis = true;
+
+        return this;
+    }
+
+    public IMintGumConfigurationBuilder AuthorizeMaintenanceApis(bool authorize = true)
+    {
+        MaintenanceApisRequireAuthorization = authorize;
+
+        return this;
+    }
+
+    public IMintGumConfigurationBuilder MaintenanceApiBasedOn(string maintenanceApiBaseUri)
+    {
+        MaintenanceApisBaseUri = maintenanceApiBaseUri;
 
         return this;
     }

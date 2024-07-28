@@ -1,3 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using Acidmanic.Utilities.MintGum.RequestHandlers;
+
+
 namespace Acidmanic.Utilities.MintGum.Extensions;
 
 public static class ApplicationBuilderExtensions
@@ -25,5 +29,62 @@ public static class ApplicationBuilderExtensions
         var mintGum = GetMintGum(app);
 
         mintGum.ConfigureMappings(app, env);
+
+        if (mintGum.Configuration.AddMaintenanceApis)
+        {
+            app.UseEndpoints(c =>
+            {
+                foreach (var handler in RequestHandlersList.RequestHandlers)
+                {
+                    
+                    var pattern = JoinPath(mintGum.Configuration.MaintenanceApisBaseUri, handler.Path);
+
+                    IEndpointConventionBuilder? builder = null;
+                    
+                    switch (handler.Method.Method.ToLower())
+                    {
+                        case "get":
+                            builder = c.MapGet(pattern, handler.Handle);
+                            break;
+                        case "post":
+                            builder = c.MapPost(pattern, handler.Handle);
+                            break;
+                        case "put":
+                            builder = c.MapPut(pattern, handler.Handle);
+                            break;
+                        case "delete":
+                            builder = c.MapDelete(pattern, handler.Handle);
+                            break;
+                    }
+
+                    if (builder is { } b)
+                    {
+                        if (mintGum.Configuration.MaintenanceApisRequireAuthorization)
+                        {
+                            builder.RequireAuthorization();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private static string JoinPath(params string[] segments)
+    {
+        var result = "";
+
+        foreach (var segment in segments)
+        {
+            var delimmiter = "";
+            
+            if (!result.EndsWith("/") && !segment.StartsWith("/"))
+            {
+                delimmiter = "/";
+            }
+
+            result += delimmiter + segment;
+        }
+
+        return result;
     }
 }

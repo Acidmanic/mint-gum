@@ -8,7 +8,7 @@ namespace Acidmanic.Utilities.MintGum
     {
 
 
-        private readonly IMintGumConfiguration _configuration;
+        public IMintGumConfiguration Configuration { get; }
         
         private readonly ILogger _logger;
         public string ServingDirectoryPath { get; private set; } = string.Empty;
@@ -19,16 +19,16 @@ namespace Acidmanic.Utilities.MintGum
 
         public MintGum(IMintGumConfiguration configuration, ILogger logger)
         {
-            _configuration = configuration;
+            Configuration = configuration;
             _logger = logger;
         }
 
 
         private void InitializePaths(string contentRootPath)
         {
-            ServingDirectoryPath = Path.Combine(contentRootPath, _configuration.ServingDirectoryName);
+            ServingDirectoryPath = Path.Combine(contentRootPath, Configuration.ServingDirectoryName);
 
-            DefaultPageFilePath = Path.Combine(ServingDirectoryPath, _configuration.DefaultPageFileName);
+            DefaultPageFilePath = Path.Combine(ServingDirectoryPath, Configuration.DefaultPageFileName);
         }
 
         private static string ExecutableBinariesDirectory()
@@ -84,7 +84,7 @@ namespace Acidmanic.Utilities.MintGum
                 endpoints.MapGet("/", c => c.Response.WriteAsync(File.ReadAllText(DefaultPageFilePath)));
             });
 
-            if (_configuration.ServesAngularSpa)
+            if (Configuration.ServesAngularSpa)
             {
                 app.Use(async (context, next) =>
                 {

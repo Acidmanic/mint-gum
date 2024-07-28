@@ -7,10 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 // *** MintGum 1) Add MintGum services
-builder.Services.AddMintGum(cb => cb.ServeAngularSpa());
-
+builder.Services.AddMintGum(cb =>
+    cb.ServeAngularSpa()
+        .WithMaintenanceApis()
+        .AuthorizeMaintenanceApis(false));
 
 var app = builder.Build();
 
@@ -30,6 +33,6 @@ app.UseRouting();
 
 // *** MintGum 3) add MintGum maps before adding other mappings 
 app.MapMintGum(app.Environment);
-
+app.MapControllers();
 
 app.Run();
