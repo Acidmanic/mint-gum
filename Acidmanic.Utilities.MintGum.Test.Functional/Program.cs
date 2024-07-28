@@ -9,7 +9,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-// Create static server configurator
+
+// ** 1) - Create static server configurator
 var frontEndApplication = new StaticServerConfigurator()
     .ServeForAngular();
 
@@ -21,12 +22,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// This line should be called before app.UseRouting();
+// ** 2) - This line should be called before app.UseRouting();
 frontEndApplication.ConfigurePreRouting(app, app.Environment);
 
 app.UseRouting();
 
-// This line Should be called after routing to configure maps 
+// ** 3) - line Should be called before mapping controllers
 frontEndApplication.ConfigureMappings(app, app.Environment);
 
 

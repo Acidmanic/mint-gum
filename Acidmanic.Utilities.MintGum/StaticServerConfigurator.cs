@@ -6,33 +6,37 @@ namespace Acidmanic.Utilities.MintGum
 {
     public class StaticServerConfigurator
     {
-        private readonly string _servingDirectoryName;
 
-        private readonly string _defaultFile;
+        public static readonly string DefaultServingDirectoryName = "front-end";
+        public static readonly string DefaultDefaultPageFileName = "Index.html";
+        
+        
+        public string ServingDirectoryName { get; private set; }
+        public string ServingDirectoryPath { get; private set; } = string.Empty;
 
-        private string _frontDirectory;
+        public string DefaultPageFileName { get; private set; }
 
-        private string _indexFile;
+        public string DefaultPageFilePath { get; private set; } = string.Empty;
+        
 
         private bool _serveForAngular = false;
 
 
         private ILogger _logger = NullLogger.Instance;
 
-        public StaticServerConfigurator(string servingDirectoryName, string defaultFile)
+        public StaticServerConfigurator(string servingDirectoryName, string defaultPageFileName)
         {
-            _servingDirectoryName = servingDirectoryName;
-            _defaultFile = defaultFile;
-            _frontDirectory = "front-end";
-            _indexFile = "Index.html";
+            ServingDirectoryName = servingDirectoryName;
+            DefaultPageFileName = defaultPageFileName;
+            InitializePaths(new DirectoryInfo(".").FullName);
         }
 
 
-        public StaticServerConfigurator(string servingDirectoryName) : this(servingDirectoryName, "index.html")
+        public StaticServerConfigurator(string servingDirectoryName) : this(servingDirectoryName, DefaultDefaultPageFileName)
         {
         }
 
-        public StaticServerConfigurator() : this("front-end")
+        public StaticServerConfigurator() : this(DefaultServingDirectoryName)
         {
         }
 
@@ -47,6 +51,13 @@ namespace Acidmanic.Utilities.MintGum
             _serveForAngular = true;
 
             return this;
+        }
+
+        private void InitializePaths(string contentRootPath)
+        {
+            ServingDirectoryPath = Path.Combine(contentRootPath, ServingDirectoryName);
+
+            DefaultPageFilePath = Path.Combine(ServingDirectoryPath, DefaultPageFileName);
         }
 
         private static string ExecutableBinariesDirectory()
@@ -78,22 +89,20 @@ namespace Acidmanic.Utilities.MintGum
         
         public void ConfigurePreRouting(IApplicationBuilder app, IHostEnvironment env)
         {
-            _frontDirectory = Path.Combine(env.ContentRootPath, _servingDirectoryName);
+            InitializePaths(env.ContentRootPath);
 
-            _indexFile = Path.Combine(_frontDirectory, _defaultFile);
-
-            if (!Directory.Exists(_frontDirectory))
+            if (!Directory.Exists(ServingDirectoryPath))
             {
-                Directory.CreateDirectory(_frontDirectory);
+                Directory.CreateDirectory(ServingDirectoryPath);
 
 
-                File.WriteAllText(_indexFile,
+                File.WriteAllText(DefaultPageFilePath,
                     "<H1>Hello!, Apparently I'm being Updated! will be back soon! :D </H1>");
             }
 
-            _logger.LogInformation("Static Pages Root: {Directory}", _frontDirectory);
+            _logger.LogInformation("Static Pages Root: {Directory}", ServingDirectoryPath);
 
-            var fileProvider = new PhysicalFileProvider(_frontDirectory);
+            var fileProvider = new PhysicalFileProvider(ServingDirectoryPath);
 
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -108,7 +117,7 @@ namespace Acidmanic.Utilities.MintGum
         {
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", c => c.Response.WriteAsync(File.ReadAllText(_indexFile)));
+                endpoints.MapGet("/", c => c.Response.WriteAsync(File.ReadAllText(DefaultPageFilePath)));
             });
 
             if (_serveForAngular)
@@ -126,7 +135,7 @@ namespace Acidmanic.Utilities.MintGum
 
                         _logger.LogDebug("redirected to index file");
 
-                        var content = await File.ReadAllTextAsync(_indexFile);
+                        var content = await File.ReadAllTextAsync(DefaultPageFilePath);
 
                         await context.Response.WriteAsync(content);
                     }
