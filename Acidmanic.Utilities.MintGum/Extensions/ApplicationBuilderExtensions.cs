@@ -68,7 +68,7 @@ public static class ApplicationBuilderExtensions
                             builder.RequireAuthorization();
                         }
                         
-                        logger.LogInformation("Mint Gum Api: {Path}",pattern);
+                        logger.LogInformation("Mint Gum Api: [{Method}] {Path}",handler.Method.Method, pattern);
                     }
                 }
             });
