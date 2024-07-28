@@ -2,9 +2,9 @@ namespace Acidmanic.Utilities.MintGum.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
-    private static StaticServerConfigurator GetMintGum(IApplicationBuilder app)
+    private static MintGum GetMintGum(IApplicationBuilder app)
     {
-        var mintGum = app.ApplicationServices.GetService<StaticServerConfigurator>();
+        var mintGum = app.ApplicationServices.GetService<MintGum>();
 
         if (mintGum is null) throw new Exception("You Should Add MintGum to your project services.");
 

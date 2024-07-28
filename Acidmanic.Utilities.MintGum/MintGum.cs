@@ -4,7 +4,7 @@ using Microsoft.Extensions.FileProviders;
 
 namespace Acidmanic.Utilities.MintGum
 {
-    public class StaticServerConfigurator
+    internal class MintGum
     {
 
 
@@ -17,7 +17,7 @@ namespace Acidmanic.Utilities.MintGum
         
 
 
-        public StaticServerConfigurator(IMintGumConfiguration configuration, ILogger logger)
+        public MintGum(IMintGumConfiguration configuration, ILogger logger)
         {
             _configuration = configuration;
             _logger = logger;

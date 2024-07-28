@@ -14,11 +14,11 @@ public static class ServiceCollectionExtensions
 
         configure(configurationBuilder);
 
-        services.AddSingleton<StaticServerConfigurator>(sp =>
+        services.AddSingleton<MintGum>(sp =>
         {
             var logger = sp.GetService<ILogger>() ?? NullLogger.Instance;
 
-            return new StaticServerConfigurator(configurationBuilder, logger);
+            return new MintGum(configurationBuilder, logger);
         });
     }
 }

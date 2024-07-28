@@ -1,6 +1,6 @@
 namespace Acidmanic.Utilities.MintGum.Configuration;
 
-public interface IMintGumConfiguration
+internal interface IMintGumConfiguration
 {
     public string ServingDirectoryName { get; }
 
