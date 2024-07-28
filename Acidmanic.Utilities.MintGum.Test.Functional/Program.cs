@@ -1,4 +1,4 @@
-using Acidmanic.Utilities.MintGum;
+using Acidmanic.Utilities.MintGum.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+// *** MintGum 1) Add MintGum services
+builder.Services.AddMintGum(cb => cb.ServeAngularSpa());
 
-// ** 1) - Create static server configurator
-var frontEndApplication = new StaticServerConfigurator()
-    .ServeForAngular();
+
+var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
@@ -22,13 +22,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// ** 2) - This line should be called before app.UseRouting();
-frontEndApplication.ConfigurePreRouting(app, app.Environment);
+// *** MintGum 2) configure MintGum providers before app.UseRouting();
+app.ConfigureMintGumProvider(app.Environment);
+
 
 app.UseRouting();
 
-// ** 3) - line Should be called before mapping controllers
-frontEndApplication.ConfigureMappings(app, app.Environment);
+// *** MintGum 3) add MintGum maps before adding other mappings 
+app.MapMintGum(app.Environment);
 
 
 app.Run();

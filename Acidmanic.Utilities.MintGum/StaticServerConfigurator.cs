@@ -1,63 +1,34 @@
 using System.Reflection;
+using Acidmanic.Utilities.MintGum.Configuration;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Acidmanic.Utilities.MintGum
 {
     public class StaticServerConfigurator
     {
 
-        public static readonly string DefaultServingDirectoryName = "front-end";
-        public static readonly string DefaultDefaultPageFileName = "Index.html";
-        
-        
-        public string ServingDirectoryName { get; private set; }
-        public string ServingDirectoryPath { get; private set; } = string.Empty;
 
-        public string DefaultPageFileName { get; private set; }
+        private readonly IMintGumConfiguration _configuration;
+        
+        private readonly ILogger _logger;
+        public string ServingDirectoryPath { get; private set; } = string.Empty;
 
         public string DefaultPageFilePath { get; private set; } = string.Empty;
         
 
-        private bool _serveForAngular = false;
 
-
-        private ILogger _logger = NullLogger.Instance;
-
-        public StaticServerConfigurator(string servingDirectoryName, string defaultPageFileName)
+        public StaticServerConfigurator(IMintGumConfiguration configuration, ILogger logger)
         {
-            ServingDirectoryName = servingDirectoryName;
-            DefaultPageFileName = defaultPageFileName;
-            InitializePaths(new DirectoryInfo(".").FullName);
-        }
-
-
-        public StaticServerConfigurator(string servingDirectoryName) : this(servingDirectoryName, DefaultDefaultPageFileName)
-        {
-        }
-
-        public StaticServerConfigurator() : this(DefaultServingDirectoryName)
-        {
-        }
-
-        public StaticServerConfigurator UseLogger(ILogger logger)
-        {
+            _configuration = configuration;
             _logger = logger;
-            return this;
         }
 
-        public StaticServerConfigurator ServeForAngular()
-        {
-            _serveForAngular = true;
-
-            return this;
-        }
 
         private void InitializePaths(string contentRootPath)
         {
-            ServingDirectoryPath = Path.Combine(contentRootPath, ServingDirectoryName);
+            ServingDirectoryPath = Path.Combine(contentRootPath, _configuration.ServingDirectoryName);
 
-            DefaultPageFilePath = Path.Combine(ServingDirectoryPath, DefaultPageFileName);
+            DefaultPageFilePath = Path.Combine(ServingDirectoryPath, _configuration.DefaultPageFileName);
         }
 
         private static string ExecutableBinariesDirectory()
@@ -76,16 +47,7 @@ namespace Acidmanic.Utilities.MintGum
 
             return new DirectoryInfo(".").FullName;
         }
-        
-        public static WebApplicationBuilder CreateApplicationBuilderOnBinariesSpot()
-        {
-            var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-            {
-                ContentRootPath = ExecutableBinariesDirectory()
-            });
-
-            return builder;
-        }
+ 
         
         public void ConfigurePreRouting(IApplicationBuilder app, IHostEnvironment env)
         {
@@ -94,8 +56,10 @@ namespace Acidmanic.Utilities.MintGum
             if (!Directory.Exists(ServingDirectoryPath))
             {
                 Directory.CreateDirectory(ServingDirectoryPath);
+            }
 
-
+            if (!File.Exists(DefaultPageFilePath))
+            {
                 File.WriteAllText(DefaultPageFilePath,
                     "<H1>Hello!, Apparently I'm being Updated! will be back soon! :D </H1>");
             }
@@ -120,7 +84,7 @@ namespace Acidmanic.Utilities.MintGum
                 endpoints.MapGet("/", c => c.Response.WriteAsync(File.ReadAllText(DefaultPageFilePath)));
             });
 
-            if (_serveForAngular)
+            if (_configuration.ServesAngularSpa)
             {
                 app.Use(async (context, next) =>
                 {
