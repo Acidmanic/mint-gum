@@ -1,4 +1,5 @@
 using Acidmanic.Utilities.MintGum.Extensions;
+using Microsoft.Extensions.Logging.LightWeight;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+builder.Services.AddSingleton<ILogger>(sp => new ConsoleLogger().Shorten());
+
 
 // *** MintGum 1) Add MintGum services
 builder.Services.AddMintGum(cb =>

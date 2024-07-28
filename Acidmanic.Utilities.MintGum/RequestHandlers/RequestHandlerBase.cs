@@ -4,12 +4,12 @@ using Acidmanic.Utilities.NamingConventions;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
-internal abstract class RequestHandlerBase:IHttpRequestHandler
+internal abstract class RequestHandlerBase : IHttpRequestHandler
 {
     public virtual HttpMethod Method => HttpMethod.Get;
-    
+
     private readonly string _pathByClass;
-    
+
     public RequestHandlerBase()
     {
         _pathByClass = GetPathByClass();
@@ -23,13 +23,14 @@ internal abstract class RequestHandlerBase:IHttpRequestHandler
         var nameLower = name.ToLower();
 
         var tag = "requesthandler";
-            
+
         if (nameLower.StartsWith(tag))
         {
             name = name.Substring(tag.Length, name.Length - tag.Length);
-                
+
             nameLower = name.ToLower();
         }
+
         if (nameLower.EndsWith(tag))
         {
             name = name.Substring(0, name.Length - tag.Length);
@@ -82,32 +83,48 @@ internal abstract class RequestHandlerBase:IHttpRequestHandler
     }
 
 
+    protected async Task<T?> ReadRequestBody<T>()
+    {
+        try
+        {
+            var value = await HttpContext.Request.ReadFromJsonAsync<T>();
+
+            return value;
+        }
+        catch
+        {
+            /**/
+        }
+
+        return default;
+    }
+
+
     protected Task Ok(object response)
     {
-        HttpContext.Response.StatusCode = (int) HttpStatusCode.OK;
-        
+        HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+
         return HttpContext.Response.WriteAsJsonAsync(response);
     }
-    
+
     protected Task Ok()
     {
-        HttpContext.Response.StatusCode = (int) HttpStatusCode.OK;
+        HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
 
         return Task.CompletedTask;
     }
-    
+
     protected Task BadRequest(object response)
     {
-        HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-        
+        HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
         return HttpContext.Response.WriteAsJsonAsync(response);
     }
-    
+
     protected Task BadRequest()
     {
-        HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+        HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
         return Task.CompletedTask;
     }
-    
 }

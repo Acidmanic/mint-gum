@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Acidmanic.Utilities.MintGum.RequestHandlers;
+using Microsoft.Extensions.Logging.Abstractions;
 
 
 namespace Acidmanic.Utilities.MintGum.Extensions;
@@ -26,6 +27,9 @@ public static class ApplicationBuilderExtensions
 
     public static void MapMintGum(this IApplicationBuilder app, IHostEnvironment env)
     {
+
+        var logger = app.ApplicationServices.GetService<ILogger>() ?? NullLogger.Instance;
+        
         var mintGum = GetMintGum(app);
 
         mintGum.ConfigureMappings(app, env);
@@ -63,6 +67,8 @@ public static class ApplicationBuilderExtensions
                         {
                             builder.RequireAuthorization();
                         }
+                        
+                        logger.LogInformation("Mint Gum Api: {Path}",pattern);
                     }
                 }
             });

@@ -7,6 +7,6 @@ internal class RequestHandlersList
 
     public static readonly List<IHttpRequestHandler> RequestHandlers = new()
     {
-        new SillyRequestHandler()
+        new ClearRequestHandler()
     };
 }
