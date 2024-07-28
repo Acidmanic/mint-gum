@@ -16,7 +16,10 @@
    version="1.1"
    viewBox="0 0 512 512"
    height="512mm"
-   width="512mm">
+   width="512mm"
+   inkscape:export-filename="/home/diego/Projects/MintGum/Graphics/icon.png"
+   inkscape:export-xdpi="6.3499999"
+   inkscape:export-ydpi="6.3499999">
   <defs
      id="defs2">
     <inkscape:perspective
@@ -37,7 +40,7 @@
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
      inkscape:cy="2449.9355"
-     inkscape:cx="113.07624"
+     inkscape:cx="96.913801"
      inkscape:zoom="0.061871843"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
