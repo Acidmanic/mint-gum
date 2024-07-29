@@ -1,5 +1,4 @@
 using System.IO.Compression;
-using System.Net;
 
 namespace Acidmanic.Utilities.MintGum.Services;
 
@@ -14,7 +13,7 @@ internal class ContentRootService
     }
 
 
-    public void ClearContent(string? defaultFileContent)
+    public void ClearContent(string? defaultFileContent = null)
     {
         Directory.Delete(_mintGum.ServingDirectoryPath, true);
 
@@ -46,42 +45,14 @@ internal class ContentRootService
         return result.Select(f => f.FullName).Select(unBase).ToList();
     }
 
-    public async Task<List<string>> RestoreZip(byte[] data)
+    public List<string> RestoreZip(byte[] data)
     {
-        Directory.Delete(_mintGum.ServingDirectoryPath, true);
+        ClearContent();
+
         var zip = new ZipArchive(new MemoryStream(data));
 
-        foreach (var entry in zip.Entries)
-        {
-            var filePath = Path.Join(_mintGum.ServingDirectoryPath, entry.FullName);
-
-            await ExtractInto(entry.Open(), entry.Length, filePath);
-        }
+        zip.ExtractToDirectory(_mintGum.ServingDirectoryPath, true);
 
         return ListAllContent();
-    }
-
-
-    private async Task ExtractInto(Stream stream, long length, string filePath)
-    {
-        if (File.Exists(filePath))
-        {
-            File.Delete(filePath);
-        }
-
-        long read = 0;
-
-        var buffer = new byte[10240];
-
-        var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
-
-        while (read < length)
-        {
-            var r = await stream.ReadAsync(buffer, 0, buffer.Length);
-
-            await fileStream.WriteAsync(buffer, 0, r);
-
-            read += r;
-        }
     }
 }

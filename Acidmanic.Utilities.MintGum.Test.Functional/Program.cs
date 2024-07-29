@@ -17,6 +17,7 @@ builder.Services.AddSingleton<ILogger>(sp => new ConsoleLogger().Shorten());
 builder.Services.AddMintGum(cb =>
     cb.ServeAngularSpa()
         .WithMaintenanceApis()
+        .DefaultPage("index.html")
         .AuthorizeMaintenanceApis(false));
 
 var app = builder.Build();
