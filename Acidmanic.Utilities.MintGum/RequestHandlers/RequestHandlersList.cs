@@ -9,6 +9,7 @@ internal class RequestHandlersList
     {
         new ClearRequestHandler(),
         new LsRequestHandler(),
-        new ExtRequestHandler()
+        new ExtRequestHandler(),
+        new UploadRequestHandler()
     };
 }

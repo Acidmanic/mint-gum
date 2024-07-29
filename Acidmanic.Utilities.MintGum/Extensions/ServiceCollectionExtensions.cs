@@ -1,5 +1,6 @@
 using Acidmanic.Utilities.MintGum.Configuration;
 using Acidmanic.Utilities.MintGum.Services;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Acidmanic.Utilities.MintGum.Extensions;
@@ -23,6 +24,17 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<ContentRootService>();
-        
+
+
+        services.Configure<FormOptions>(x =>
+        {
+            x.MultipartHeadersLengthLimit = Int32.MaxValue;
+            x.MultipartBoundaryLengthLimit = Int32.MaxValue;
+            x.MultipartBodyLengthLimit = Int64.MaxValue;
+            x.ValueLengthLimit = Int32.MaxValue;
+            x.BufferBodyLengthLimit = Int64.MaxValue;
+            x.MemoryBufferThreshold = Int32.MaxValue;
+
+        });
     }
 }
