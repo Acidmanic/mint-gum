@@ -31,13 +31,14 @@ if (app.Environment.IsDevelopment())
 }
 
 // *** MintGum 2) configure MintGum providers before app.UseRouting();
-app.ConfigureMintGumProvider(app.Environment);
+app.ConfigureMintGumProvider();
 
 
 app.UseRouting();
 
 // *** MintGum 3) add MintGum maps before adding other mappings 
-app.MapMintGum(app.Environment);
+app.MapMintGum();
+
 app.MapControllers();
 
 app.Run();

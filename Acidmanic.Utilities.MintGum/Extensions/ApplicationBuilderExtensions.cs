@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Acidmanic.Utilities.MintGum.RequestHandlers;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -17,22 +16,21 @@ public static class ApplicationBuilderExtensions
     }
 
 
-    public static void ConfigureMintGumProvider(this IApplicationBuilder app, IHostEnvironment env)
+    public static void ConfigureMintGumProvider(this IApplicationBuilder app)
     {
         var mintGum = GetMintGum(app);
 
-        mintGum.ConfigurePreRouting(app, env);
+        mintGum.ConfigurePreRouting(app);
     }
 
 
-    public static void MapMintGum(this IApplicationBuilder app, IHostEnvironment env)
+    public static void MapMintGum(this IApplicationBuilder app)
     {
-
         var logger = app.ApplicationServices.GetService<ILogger>() ?? NullLogger.Instance;
         
         var mintGum = GetMintGum(app);
 
-        mintGum.ConfigureMappings(app, env);
+        mintGum.ConfigureMappings(app);
 
         if (mintGum.Configuration.AddMaintenanceApis)
         {
@@ -65,7 +63,7 @@ public static class ApplicationBuilderExtensions
                     {
                         if (mintGum.Configuration.MaintenanceApisRequireAuthorization)
                         {
-                            builder.RequireAuthorization();
+                            b.RequireAuthorization();
                         }
                         
                         logger.LogInformation("Mint Gum Api: [{Method}] {Path}",handler.Method.Method, pattern);

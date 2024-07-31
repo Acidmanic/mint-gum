@@ -24,31 +24,29 @@ namespace Acidmanic.Utilities.MintGum
         }
 
 
-        private void InitializePaths(string contentRootPath)
+        private void InitializePaths()
         {
+            var contentRootPath = new DirectoryInfo(".").FullName;
+
+            var assembly = Assembly.GetEntryAssembly();
+
+            if (assembly?.Location is { } binaryLocation)
+            {
+                var binaryEntryFile = new FileInfo(binaryLocation);
+
+                var binariesDirectory = binaryEntryFile.Directory;
+
+                if (binariesDirectory is { } bd)
+                {
+                    contentRootPath = bd.FullName;
+                }
+            }
+
             ServingDirectoryPath = Path.Combine(contentRootPath, Configuration.ServingDirectoryName);
 
             DefaultPageFilePath = Path.Combine(ServingDirectoryPath, Configuration.DefaultPageFileName);
         }
-
-        private static string ExecutableBinariesDirectory()
-        {
-            var assemblyLocation = Assembly.GetEntryAssembly()?.Location;
-
-            if (!string.IsNullOrEmpty(assemblyLocation))
-            {
-                var directory = new FileInfo(assemblyLocation).Directory?.FullName;
-
-                if (!string.IsNullOrEmpty(directory))
-                {
-                    return directory;
-                }
-            }
-
-            return new DirectoryInfo(".").FullName;
-        }
-
-
+        
         public void CreateDefaultIndexFile(string? content = null)
         {
             if (!File.Exists(DefaultPageFilePath))
@@ -58,9 +56,9 @@ namespace Acidmanic.Utilities.MintGum
             }
         }
 
-        public void ConfigurePreRouting(IApplicationBuilder app, IHostEnvironment env)
+        public void ConfigurePreRouting(IApplicationBuilder app)
         {
-            InitializePaths(env.ContentRootPath);
+            InitializePaths();
 
             if (!Directory.Exists(ServingDirectoryPath))
             {
@@ -82,12 +80,9 @@ namespace Acidmanic.Utilities.MintGum
         }
 
 
-        public void ConfigureMappings(IApplicationBuilder app, IHostEnvironment env)
+        public void ConfigureMappings(IApplicationBuilder app)
         {
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", c => c.Response.WriteAsync(File.ReadAllText(DefaultPageFilePath)));
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapGet("/", c => c.Response.WriteAsync(File.ReadAllText(DefaultPageFilePath))); });
 
             if (Configuration.ServesAngularSpa)
             {
