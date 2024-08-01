@@ -12,6 +12,7 @@ internal static class RequestHandlersList
         new DeleteFilesRequestHandler(),
         new RestoreZippedFilesRequestHandler(),
         new RestoreFilesRequestHandler(),
-        new RenameRequestHandler()
+        new RenameRequestHandler(),
+        new IntroduceRequestHandler()
     };
 }

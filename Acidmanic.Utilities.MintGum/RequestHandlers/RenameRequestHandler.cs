@@ -1,4 +1,3 @@
-using Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
 using Acidmanic.Utilities.MintGum.Services;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;

@@ -39,7 +39,7 @@ public static class ApplicationBuilderExtensions
                 foreach (var handler in RequestHandlersList.RequestHandlers)
                 {
                     
-                    var pattern = JoinPath(mintGum.Configuration.MaintenanceApisBaseUri, handler.RoutePath);
+                    var pattern = mintGum.Configuration.MaintenanceApisBaseUri.JoinPath(handler.RoutePath);
 
                     IEndpointConventionBuilder? builder = null;
                     
@@ -73,22 +73,5 @@ public static class ApplicationBuilderExtensions
         }
     }
 
-    private static string JoinPath(params string[] segments)
-    {
-        var result = "";
-
-        foreach (var segment in segments)
-        {
-            var delimmiter = "";
-            
-            if (!result.EndsWith("/") && !segment.StartsWith("/"))
-            {
-                delimmiter = "/";
-            }
-
-            result += delimmiter + segment;
-        }
-
-        return result;
-    }
+    
 }

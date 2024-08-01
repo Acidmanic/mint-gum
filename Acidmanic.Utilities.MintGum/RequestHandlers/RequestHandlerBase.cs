@@ -10,18 +10,33 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler
     public virtual HttpMethod Method => HttpMethod.Get;
 
     private readonly string _routePathByClass;
+    public string Name { get; }
 
     protected record UploadedFile(string FileName, string FormField, byte[] FileData, long Length);
 
 
     public RequestHandlerBase()
     {
-        _routePathByClass = GetPathByClass();
+        var convertedName = GetPathByClass(
+            ConventionDescriptor.Standard.Kebab,
+            new ConventionDescriptor
+            {
+                Delimiter = " ",
+                Name = "Title",
+                Separation = Separation.ByDelimiter,
+                PreFix = string.Empty,
+                SegmentCase = i => Case.Capital
+            }
+        );
+        
+        _routePathByClass = convertedName[0];
+        
+        Name = convertedName[1];
     }
 
     public virtual string RoutePath => _routePathByClass;
 
-    private string GetPathByClass()
+    private string[] GetPathByClass(params ConventionDescriptor[] conventions)
     {
         var name = GetType().Name;
         var nameLower = name.ToLower();
@@ -46,10 +61,10 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler
 
         if (parsed)
         {
-            name = nc.Render(parsed.Value.Segments, ConventionDescriptor.Standard.Kebab);
+            return conventions.Select(c => nc.Render(parsed.Value.Segments, c)).ToArray();
         }
 
-        return name;
+        return conventions.Select(c => name).ToArray();
     }
 
     protected abstract Task PerformHandling();
