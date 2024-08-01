@@ -6,6 +6,11 @@ internal class ContentRootService
 {
     private readonly MintGum _mintGum;
 
+    private enum InclusionStrategy
+    {
+        Inclusive,
+        Exclusive
+    }
 
     public string ContentRootDirectoryPath => _mintGum.ServingDirectoryPath;
     
@@ -15,6 +20,25 @@ internal class ContentRootService
     }
 
 
+    private string SanitizePattern(string? pattern, InclusionStrategy inclusion = InclusionStrategy.Exclusive)
+    {
+
+        var defaultPattern = inclusion==InclusionStrategy.Inclusive
+            ? "*"
+            : "0573A53EB80B4E1899218A4C88ACCBEC:2C9663A5-FE4F-4DB5-9CDD-E6EFC236DA79";
+        
+        
+        if (string.IsNullOrEmpty(pattern)) return defaultPattern;
+
+        if (Path.IsPathRooted(pattern))
+        {
+            return defaultPattern;
+        }
+
+        return pattern;
+    }
+    
+    
     public void ClearContent(string? defaultFileContent = null)
     {
         Directory.Delete(_mintGum.ServingDirectoryPath, true);
@@ -26,6 +50,8 @@ internal class ContentRootService
 
     public void Delete(string pattern)
     {
+        pattern = SanitizePattern(pattern,InclusionStrategy.Exclusive);
+        
         var directories = Directory.GetDirectories(_mintGum.ServingDirectoryPath,
             pattern, SearchOption.AllDirectories);
 
@@ -65,6 +91,8 @@ internal class ContentRootService
 
     public List<string> ListAllContent(string? pattern = null)
     {
+        pattern = SanitizePattern(pattern,InclusionStrategy.Inclusive);
+        
         var directory = new DirectoryInfo(_mintGum.ServingDirectoryPath);
 
         var searchPattern = pattern ?? string.Empty;

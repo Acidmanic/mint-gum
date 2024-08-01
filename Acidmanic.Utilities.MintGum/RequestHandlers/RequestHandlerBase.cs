@@ -11,7 +11,7 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler
 
     private readonly string _routePathByClass;
 
-    protected record UploadedFile(string FileName, string FormField, byte[] FileData);
+    protected record UploadedFile(string FileName, string FormField, byte[] FileData, long Length);
 
 
     public RequestHandlerBase()
@@ -113,7 +113,8 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler
             files.Add(new UploadedFile(
                 formFile.FileName,
                 formFile.Name,
-                await formFile.OpenReadStream().ReadAsBytesArrayAsync(formFile.Length)
+                await formFile.OpenReadStream().ReadAsBytesArrayAsync(formFile.Length),
+                formFile.Length
             ));
         }
 

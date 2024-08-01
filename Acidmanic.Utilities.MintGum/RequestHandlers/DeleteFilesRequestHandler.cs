@@ -5,6 +5,8 @@ namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
 internal class DeleteFilesRequestHandler : RequestHandlerBase
 {
+    public override HttpMethod Method => HttpMethod.Delete;
+
     private record DeleteFilesRequest(string SearchPattern);
     
     protected override async Task PerformHandling()

@@ -22,7 +22,7 @@ internal  static class StreamExtensions
             read += r;
         }
 
-        return output.GetBuffer();
+        return output.ToArray();
     }
 
     public static async Task<byte[]> ReadAsBytesArrayAsync(this Stream stream)
@@ -44,6 +44,6 @@ internal  static class StreamExtensions
             if (r > 0) read += r;
         }
 
-        return output.GetBuffer();
+        return output.ToArray();
     }
 }
