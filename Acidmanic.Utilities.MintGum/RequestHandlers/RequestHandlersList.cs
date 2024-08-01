@@ -11,6 +11,7 @@ internal static class RequestHandlersList
         new LsRequestHandler(),
         new DeleteFilesRequestHandler(),
         new RestoreZippedFilesRequestHandler(),
-        new RestoreFilesRequestHandler()
+        new RestoreFilesRequestHandler(),
+        new RenameRequestHandler()
     };
 }

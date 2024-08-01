@@ -98,4 +98,15 @@ internal class ContentRootService
 
         return ListAllContent();
     }
+
+    public void Rename(string sourceName, string destinationName)
+    {
+
+        var sourcePath = Path.Join(_mintGum.ServingDirectoryPath, sourceName);
+        
+        var destinationPath = Path.Join(_mintGum.ServingDirectoryPath, destinationName);
+        
+        Directory.Move(sourcePath,destinationPath);
+        
+    }
 }
