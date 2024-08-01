@@ -3,12 +3,11 @@
         <title>Upload</title>
     </head>
     <body>
-        <form action="http://localhost:5128/api/mint-gum/upload" method="post">
+        <form  action="http://localhost:5128/api/mint-gum/upload" enctype="multipart/form-data" method="post">
+            <input type="file" name="upFile" id="upFile" >
+            <input type="text" name="asghar" value="akbar" id="ashgharid">
+            <input class="btn" type="submit" value="Upload" />
 
-            <input type="file" name="filell.jpg">
-
-
-            <button type="submit">Send</button>
         </form>
     </body>
 </html>

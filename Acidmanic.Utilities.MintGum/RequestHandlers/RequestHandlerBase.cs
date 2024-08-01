@@ -1,4 +1,5 @@
 using System.Net;
+using Acidmanic.Utilities.MintGum.Extensions;
 using Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
 using Acidmanic.Utilities.NamingConventions;
 
@@ -8,14 +9,17 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler
 {
     public virtual HttpMethod Method => HttpMethod.Get;
 
-    private readonly string _pathByClass;
+    private readonly string _routePathByClass;
+
+    protected record UploadedFile(string FileName, string FormField, byte[] FileData);
+
 
     public RequestHandlerBase()
     {
-        _pathByClass = GetPathByClass();
+        _routePathByClass = GetPathByClass();
     }
 
-    public virtual string Path => _pathByClass;
+    public virtual string RoutePath => _routePathByClass;
 
     private string GetPathByClass()
     {
@@ -99,6 +103,22 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler
         return default;
     }
 
+
+    protected async Task<List<UploadedFile>> ReadUploadedFiles()
+    {
+        var files = new List<UploadedFile>();
+
+        foreach (var formFile in HttpContext.Request.Form.Files)
+        {
+            files.Add(new UploadedFile(
+                formFile.FileName,
+                formFile.Name,
+                await formFile.OpenReadStream().ReadAsBytesArrayAsync(formFile.Length)
+            ));
+        }
+
+        return files;
+    }
 
     protected Task Ok(object response)
     {

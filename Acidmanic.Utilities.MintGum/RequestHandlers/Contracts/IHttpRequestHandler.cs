@@ -4,7 +4,7 @@ internal interface IHttpRequestHandler
 {
     HttpMethod Method { get; }
     
-    string Path { get; }
+    string RoutePath { get; }
 
     Task Handle(HttpContext context);
 }

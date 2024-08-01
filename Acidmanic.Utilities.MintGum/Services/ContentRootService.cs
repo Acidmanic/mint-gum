@@ -7,6 +7,8 @@ internal class ContentRootService
     private readonly MintGum _mintGum;
 
 
+    public string ContentRootDirectoryPath => _mintGum.ServingDirectoryPath;
+    
     public ContentRootService(MintGum mintGum)
     {
         _mintGum = mintGum;
@@ -45,9 +47,12 @@ internal class ContentRootService
         return result.Select(f => f.FullName).Select(unBase).ToList();
     }
 
-    public List<string> RestoreZip(byte[] data)
+    public List<string> RestoreZip(byte[] data,bool clearContent = false)
     {
-        ClearContent();
+        if (clearContent)
+        {
+            ClearContent();
+        }
 
         var zip = new ZipArchive(new MemoryStream(data));
 
