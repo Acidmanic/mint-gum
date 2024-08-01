@@ -24,6 +24,44 @@ internal class ContentRootService
         _mintGum.CreateDefaultIndexFile(defaultFileContent);
     }
 
+    public void Delete(string pattern)
+    {
+        var directories = Directory.GetDirectories(_mintGum.ServingDirectoryPath,
+            pattern, SearchOption.AllDirectories);
+
+        foreach (var directory in directories)
+        {
+            try
+            {
+                if (Directory.Exists(directory))
+                {
+                    Directory.Delete(directory,true);
+                }
+            }
+            catch 
+            {
+                /* Ignore */
+            }
+        }
+
+        var files = Directory.GetFiles(_mintGum.ServingDirectoryPath, pattern);
+
+        foreach (var file in files)
+        {
+            try
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                }
+            }
+            catch 
+            {
+                /* Ignore */
+            }
+        }
+    }
+
 
     public List<string> ListAllContent(string? pattern = null)
     {

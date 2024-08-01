@@ -16,10 +16,4 @@
     <ProjectReference Include="..\Acidmanic.Utilities.MintGum\Acidmanic.Utilities.MintGum.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="e.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

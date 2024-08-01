@@ -19,7 +19,10 @@ internal class RestoreZippedFilesRequestHandler : RequestHandlerBase
         {
             contentRoot.RestoreZip(uploadedFile.FileData, false);
         }
-        await Ok();
+        
+        var filesList = contentRoot.ListAllContent();
+        
+        await Ok(filesList);
     }
 
     

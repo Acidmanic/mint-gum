@@ -9,7 +9,7 @@ internal static class RequestHandlersList
     {
         new ClearRequestHandler(),
         new LsRequestHandler(),
-        new ExtRequestHandler(),
+        new DeleteFilesRequestHandler(),
         new RestoreZippedFilesRequestHandler(),
         new RestoreFilesRequestHandler()
     };

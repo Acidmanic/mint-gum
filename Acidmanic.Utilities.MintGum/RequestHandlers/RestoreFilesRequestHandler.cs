@@ -25,8 +25,10 @@ internal class RestoreFilesRequestHandler : RequestHandlerBase
             }
             await File.WriteAllBytesAsync(filePath,uploadedFile.FileData);
         }
+
+        var filesList = contentRoot.ListAllContent();
         
-        await Ok();
+        await Ok(filesList);
     }
 
     
