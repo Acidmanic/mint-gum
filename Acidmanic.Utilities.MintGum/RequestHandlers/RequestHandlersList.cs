@@ -13,6 +13,7 @@ internal static class RequestHandlersList
         new RestoreZippedFilesRequestHandler(),
         new RestoreFilesRequestHandler(),
         new RenameRequestHandler(),
-        new IntroduceRequestHandler()
+        new IntroduceRequestHandler(),
+        new InsomniaRequestHandler()
     };
 }
