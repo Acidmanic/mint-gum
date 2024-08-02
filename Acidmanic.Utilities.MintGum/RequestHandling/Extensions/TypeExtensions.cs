@@ -1,6 +1,6 @@
 using Acidmanic.Utilities.NamingConventions;
 
-namespace Acidmanic.Utilities.MintGum.RequestHandlers.Extensions;
+namespace Acidmanic.Utilities.MintGum.RequestHandling.Extensions;
 
 internal static class TypeExtensions
 {

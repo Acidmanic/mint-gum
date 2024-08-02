@@ -1,10 +1,10 @@
 using System.Net;
 using Acidmanic.Utilities.MintGum.Extensions;
-using Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
-using Acidmanic.Utilities.MintGum.RequestHandlers.Extensions;
+using Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
+using Acidmanic.Utilities.MintGum.RequestHandling.Extensions;
 using Acidmanic.Utilities.NamingConventions;
 
-namespace Acidmanic.Utilities.MintGum.RequestHandlers;
+namespace Acidmanic.Utilities.MintGum.RequestHandling;
 
 internal abstract class RequestHandlerBase : IHttpRequestHandler, IRequestDescriptor
 {

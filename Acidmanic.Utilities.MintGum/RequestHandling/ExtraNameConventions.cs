@@ -1,6 +1,6 @@
 using Acidmanic.Utilities.NamingConventions;
 
-namespace Acidmanic.Utilities.MintGum.RequestHandlers;
+namespace Acidmanic.Utilities.MintGum.RequestHandling;
 
 public static class ExtraNameConventions
 {

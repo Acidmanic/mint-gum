@@ -1,5 +1,6 @@
 using Acidmanic.Utilities.MintGum.Extensions;
-using Acidmanic.Utilities.MintGum.RequestHandlers.Extensions;
+using Acidmanic.Utilities.MintGum.RequestHandling;
+using Acidmanic.Utilities.MintGum.RequestHandling.Extensions;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 

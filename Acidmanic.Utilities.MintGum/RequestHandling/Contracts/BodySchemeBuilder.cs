@@ -1,6 +1,4 @@
-using Acidmanic.Utilities.Reflection;
-
-namespace Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
+namespace Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
 
 public class BodySchemeBuilder
 {

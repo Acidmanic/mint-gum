@@ -1,5 +1,6 @@
 using Acidmanic.Utilities.MintGum.Extensions;
 using Acidmanic.Utilities.MintGum.Insomnia.Models;
+using Acidmanic.Utilities.MintGum.RequestHandling;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 

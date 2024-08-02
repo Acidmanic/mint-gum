@@ -1,4 +1,4 @@
-namespace Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
+namespace Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
 
 public enum MultipartValueType
 {
