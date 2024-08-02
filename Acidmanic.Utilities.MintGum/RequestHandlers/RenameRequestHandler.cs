@@ -4,6 +4,8 @@ namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
 internal class RenameRequestHandler : RequestHandlerBase
 {
+    public override HttpMethod Method => HttpMethod.Put;
+
     private record RenameRequest(string Name, string NewName);
     
     protected override async Task PerformHandling()
