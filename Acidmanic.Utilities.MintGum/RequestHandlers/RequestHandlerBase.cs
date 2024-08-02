@@ -36,6 +36,8 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler, IRequestDescri
         NameKebabCase = convertedName[0];
         
         NameTitleCase = convertedName[1];
+
+        Description = convertedName[1] + " Endpoint";
     }
 
     

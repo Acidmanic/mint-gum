@@ -1,9 +1,8 @@
-using Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
 using Acidmanic.Utilities.MintGum.Services;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
-internal class ClearRequestHandler:RequestHandlerBase
+internal class ClearRequestHandler : RequestHandlerBase
 {
     private record ClearRequest(string? Content);
 
@@ -13,14 +12,14 @@ internal class ClearRequestHandler:RequestHandlerBase
                                           "And creates a simple default page. " +
                                           "If Content is provided in the request, it will be written into default page file.";
 
-    protected override async  Task PerformHandling()
+    protected override async Task PerformHandling()
     {
         var request = await ReadRequestBody<ClearRequest>();
 
         var cr = Inject<ContentRootService>();
-        
+
         cr.ClearContent(request?.Content);
-        
+
         await Ok();
     }
 }
