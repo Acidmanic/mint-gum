@@ -77,7 +77,22 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler, IRequestDescri
         throw new Exception($"Please add service registration for the type: {typeof(T).FullName}");
     }
 
+    protected string BaseUrl
+    {
+        get
+        {
+            var baseurl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
 
+
+            if (baseurl.EndsWith("/") || baseurl.EndsWith("\\"))
+            {
+                baseurl = baseurl.Substring(0, baseurl.Length - 1);
+            }
+
+            return baseurl;
+        }
+    }
+    
     protected async Task<T?> ReadRequestBody<T>()
     {
         try
@@ -94,6 +109,7 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler, IRequestDescri
         return default;
     }
 
+    
 
     protected async Task<List<UploadedFile>> ReadUploadedFiles()
     {

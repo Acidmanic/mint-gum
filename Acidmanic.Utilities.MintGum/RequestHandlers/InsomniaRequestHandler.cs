@@ -13,26 +13,33 @@ internal class InsomniaRequestHandler : RequestHandlerBase
 
         var folderId = document.AddFolder("Mint-gum").Id;
         
-        document.BaseEnvironment.Add("mint_uri",mintGum.Configuration.MaintenanceApisBaseUri);
+        var mintBaseEnvVar = new EnvironmentKeyValuePair("mint_uri", mintGum.Configuration.MaintenanceApisBaseUri);
+        
+        document.BaseEnvironment.Add(mintBaseEnvVar);
+        
+        var currentEnvironment = document.AddEnvironment(HttpContext.Request.Host.Host);
+
+        var baseUrlEnvVar = new EnvironmentKeyValuePair("base_url", BaseUrl);
+        
+        currentEnvironment.Add(baseUrlEnvVar);
 
         var descriptors = RequestHandlersList.RequestDescriptors;
         
         foreach (var descriptor in descriptors)
         {
-            var uri = mintGum.Configuration.MaintenanceApisBaseUri.JoinPath(descriptor.Uri);
+            
+            var requestUrl = $"{baseUrlEnvVar}/{mintBaseEnvVar}/{descriptor.Uri}";
 
-            var url = $"{HttpContext.Request.Scheme}://".JoinPath(
-                HttpContext.Request.Host.Value,
-                mintGum.Configuration.MaintenanceApisBaseUri,
-                descriptor.Uri);
-
+            requestUrl = requestUrl.Replace("//", "/");
+            
             document.AddRequest(descriptor.NameKebabCase,
                 descriptor.NameTitleCase, 
                 descriptor.MethodName, 
-                uri, folderId);
+                requestUrl, folderId);
 
         }
 
         return Ok(document);
     }
+    
 }

@@ -69,6 +69,10 @@ public class InsomniaDocument
         _foldersById = new Dictionary<string, InsomniaFolder>();
         _foldersByName = new Dictionary<string, List<InsomniaFolder>>();
         _requestsById = new Dictionary<string, InsomniaRequest>();
+        
+        _environmentsById = new Dictionary<string, InsomniaEnvironment>();
+        _environmentsByName = new Dictionary<string, InsomniaEnvironment>();
+        
     }
 
     public InsomniaFolder AddFolder(string folderName, string? parentFolderId = null)
@@ -125,7 +129,7 @@ public class InsomniaDocument
         var env = new InsomniaEnvironment()
         {
             Name = name,
-            ParentId = _workspace.Id
+            ParentId = _baseEnvironment.Id
         };
 
         env.Id = env.CreateId();
@@ -133,6 +137,8 @@ public class InsomniaDocument
         _environmentsByName[env.Id] = env;
         _environmentsByName[env.Name] = env;
 
+        Resources.Add(env);
+        
         return env;
     }
 }

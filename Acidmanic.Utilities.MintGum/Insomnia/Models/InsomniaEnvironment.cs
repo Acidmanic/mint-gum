@@ -27,6 +27,8 @@ public class InsomniaEnvironment:InsomniaResource
     public object? Color => null;
 
 
+    public void Add(EnvironmentKeyValuePair value) => Add(value.Key, value.Value);
+    
     public void Add(string key, string value)
     {
         if (Data.ContainsKey(key))
