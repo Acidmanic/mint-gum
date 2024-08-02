@@ -4,6 +4,7 @@ using Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
 using Acidmanic.Utilities.Reflection;
 using Acidmanic.Utilities.Reflection.ObjectTree;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
@@ -17,7 +18,11 @@ public static class InsomniaBodyTranslator
         {
             var instance = Instantiate(scheme.BodyModelType!);
 
-            var json = JsonConvert.SerializeObject(instance,Formatting.Indented);
+            var json = JsonConvert.SerializeObject(instance, new JsonSerializerSettings()
+            {
+                Formatting =Formatting.Indented,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
 
             return new
             {
