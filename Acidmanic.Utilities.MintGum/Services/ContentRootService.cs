@@ -13,7 +13,7 @@ internal class ContentRootService
     }
 
     public string ContentRootDirectoryPath => _mintGum.ServingDirectoryPath;
-    
+
     public ContentRootService(MintGum mintGum)
     {
         _mintGum = mintGum;
@@ -22,12 +22,11 @@ internal class ContentRootService
 
     private string SanitizePattern(string? pattern, InclusionStrategy inclusion = InclusionStrategy.Exclusive)
     {
-
-        var defaultPattern = inclusion==InclusionStrategy.Inclusive
+        var defaultPattern = inclusion == InclusionStrategy.Inclusive
             ? "*"
             : "0573A53EB80B4E1899218A4C88ACCBEC:2C9663A5-FE4F-4DB5-9CDD-E6EFC236DA79";
-        
-        
+
+
         if (string.IsNullOrEmpty(pattern)) return defaultPattern;
 
         if (Path.IsPathRooted(pattern))
@@ -37,8 +36,8 @@ internal class ContentRootService
 
         return pattern;
     }
-    
-    
+
+
     public void ClearContent(string? defaultFileContent = null)
     {
         Directory.Delete(_mintGum.ServingDirectoryPath, true);
@@ -50,8 +49,8 @@ internal class ContentRootService
 
     public void Delete(string pattern)
     {
-        pattern = SanitizePattern(pattern,InclusionStrategy.Exclusive);
-        
+        pattern = SanitizePattern(pattern, InclusionStrategy.Exclusive);
+
         var directories = Directory.GetDirectories(_mintGum.ServingDirectoryPath,
             pattern, SearchOption.AllDirectories);
 
@@ -61,10 +60,10 @@ internal class ContentRootService
             {
                 if (Directory.Exists(directory))
                 {
-                    Directory.Delete(directory,true);
+                    Directory.Delete(directory, true);
                 }
             }
-            catch 
+            catch
             {
                 /* Ignore */
             }
@@ -81,7 +80,7 @@ internal class ContentRootService
                     File.Delete(file);
                 }
             }
-            catch 
+            catch
             {
                 /* Ignore */
             }
@@ -91,8 +90,8 @@ internal class ContentRootService
 
     public List<string> ListAllContent(string? pattern = null)
     {
-        pattern = SanitizePattern(pattern,InclusionStrategy.Inclusive);
-        
+        pattern = SanitizePattern(pattern, InclusionStrategy.Inclusive);
+
         var directory = new DirectoryInfo(_mintGum.ServingDirectoryPath);
 
         var searchPattern = pattern ?? string.Empty;
@@ -113,7 +112,7 @@ internal class ContentRootService
         return result.Select(f => f.FullName).Select(unBase).ToList();
     }
 
-    public List<string> RestoreZip(byte[] data,bool clearContent = false)
+    public List<string> RestoreZip(byte[] data, bool clearContent = false)
     {
         if (clearContent)
         {
@@ -127,14 +126,24 @@ internal class ContentRootService
         return ListAllContent();
     }
 
-    public void Rename(string sourceName, string destinationName)
+    public bool Rename(string sourceFilePath, string destinationName)
     {
+        var sourcePath = Path.Join(_mintGum.ServingDirectoryPath, sourceFilePath);
 
-        var sourcePath = Path.Join(_mintGum.ServingDirectoryPath, sourceName);
-        
-        var destinationPath = Path.Join(_mintGum.ServingDirectoryPath, destinationName);
-        
-        Directory.Move(sourcePath,destinationPath);
-        
+        if (File.Exists(sourcePath))
+        {
+            var sourceFileLocation = new FileInfo(sourcePath).Directory?.FullName;
+
+            if (sourceFileLocation is { } location)
+            {
+                var destinationPath = Path.Join(location, destinationName);
+
+                Directory.Move(sourcePath, destinationPath);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

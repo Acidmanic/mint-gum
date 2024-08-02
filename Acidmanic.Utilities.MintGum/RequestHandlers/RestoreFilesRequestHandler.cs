@@ -7,6 +7,10 @@ internal class RestoreFilesRequestHandler : RequestHandlerBase
     public override HttpMethod Method => HttpMethod.Post;
 
 
+    public override string Description =>
+        "Will clear the ContentRoot directory, and write all the uploaded files into it. " +
+        "you can send upload files into this endpoint using Multipart form fields." ;
+    
     protected override async Task PerformHandling()
     {
         var files = await ReadUploadedFiles();

@@ -8,18 +8,21 @@ internal static class HttpRequestHandlerExtensions
 
     private class DefaultRequestDescriptor : IRequestDescriptor
     {
-        public DefaultRequestDescriptor(string nameKebabCase, string nameTitleCase, string methodName, string uri)
+        public DefaultRequestDescriptor(string nameKebabCase, string nameTitleCase, string methodName, string uri, string description)
         {
             NameKebabCase = nameKebabCase;
             NameTitleCase = nameTitleCase;
             MethodName = methodName;
             Uri = uri;
+            Description = description;
         }
 
         public string NameKebabCase { get; }
         public string NameTitleCase { get; }
         public string MethodName { get; }
         public string Uri { get; }
+        
+        public string Description { get; }
     }
     
     
@@ -43,9 +46,12 @@ internal static class HttpRequestHandlerExtensions
             ExtraNameConventions.Title
         );
 
+        string description = names[1] + " endpoint.";
+        
         return new DefaultRequestDescriptor(names[0],
             names[1],
             handler.Method.Method,
-            handler.RoutePath);
+            handler.RoutePath,
+            description);
     }
 }

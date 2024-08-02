@@ -20,6 +20,8 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler, IRequestDescri
 
     public string Uri => RoutePath;
 
+    public virtual string Description { get; } = string.Empty;
+
     protected record UploadedFile(string FileName, string FormField, byte[] FileData, long Length);
 
 

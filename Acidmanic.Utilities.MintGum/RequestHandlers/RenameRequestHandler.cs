@@ -6,19 +6,21 @@ internal class RenameRequestHandler : RequestHandlerBase
 {
     public override HttpMethod Method => HttpMethod.Put;
 
-    private record RenameRequest(string Name, string NewName);
+    public override string Description => "Renames a file or directory.";
+
+    private record RenameRequest(string SourcePath, string NewName);
     
     protected override async Task PerformHandling()
     {
         var request = await ReadRequestBody<RenameRequest>();
         
         if (request is { } r 
-            && !string.IsNullOrEmpty(r.Name)
+            && !string.IsNullOrEmpty(r.SourcePath)
             && !string.IsNullOrEmpty(r.NewName))
         {
             var contentRoot = Inject<ContentRootService>();
 
-            contentRoot.Rename(request.Name, request.NewName);
+            contentRoot.Rename(request.SourcePath, request.NewName);
             
             var filesList = contentRoot.ListAllContent();
         

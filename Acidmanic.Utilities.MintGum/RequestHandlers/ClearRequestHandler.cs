@@ -9,6 +9,10 @@ internal class ClearRequestHandler:RequestHandlerBase
 
     public override HttpMethod Method => HttpMethod.Delete;
 
+    public override string Description => "Deletes everything in the ContentRoot directory. " +
+                                          "And creates a simple default page. " +
+                                          "If Content is provided in the request, it will be written into default page file.";
+
     protected override async  Task PerformHandling()
     {
         var request = await ReadRequestBody<ClearRequest>();

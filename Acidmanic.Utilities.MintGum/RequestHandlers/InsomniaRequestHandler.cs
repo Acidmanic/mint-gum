@@ -5,6 +5,11 @@ namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
 internal class InsomniaRequestHandler : RequestHandlerBase
 {
+
+    public override string Description =>
+        "Provides a json describing the Mint-Gum Apis." +
+        " It can be used to be imported into Insomnia Rest Client";
+    
     protected override Task PerformHandling()
     {
         var document = new InsomniaDocument("Mint-gum-export");
@@ -33,7 +38,7 @@ internal class InsomniaRequestHandler : RequestHandlerBase
             requestUrl = requestUrl.Replace("//", "/");
             
             document.AddRequest(descriptor.NameKebabCase,
-                descriptor.NameTitleCase, 
+                descriptor.Description, 
                 descriptor.MethodName, 
                 requestUrl, folderId);
 

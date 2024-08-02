@@ -2,11 +2,13 @@ namespace Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
 
 public interface IRequestDescriptor
 {
-    public string NameKebabCase { get; }
+    string NameKebabCase { get; }
     
-    public string NameTitleCase { get; }
+    string NameTitleCase { get; }
     
     string MethodName { get; }
     
     string Uri { get; }
+    
+    string Description { get; } 
 }

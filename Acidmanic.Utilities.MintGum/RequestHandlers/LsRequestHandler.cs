@@ -5,7 +5,10 @@ namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
 internal class LsRequestHandler : RequestHandlerBase
 {
-    private record LsRequest(string? Pattern);
+    private record LsRequest(string? SearchPattern);
+
+    public override string Description => "Returns a list of all files (recursively) inside ContentRoot directory. " +
+                                          "Given a search pattern, it will only return matching results.";
 
     protected override async Task PerformHandling()
     {
@@ -13,7 +16,7 @@ internal class LsRequestHandler : RequestHandlerBase
 
         var cr = Inject<ContentRootService>();
 
-        var content = cr.ListAllContent(request?.Pattern);
+        var content = cr.ListAllContent(request?.SearchPattern);
 
         await Ok(new { Content = content });
     }

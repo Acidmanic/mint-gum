@@ -7,6 +7,9 @@ internal class DeleteFilesRequestHandler : RequestHandlerBase
 {
     public override HttpMethod Method => HttpMethod.Delete;
 
+    public override string Description =>
+        "Deletes every file and directory matching the given pattern inside the ContentRoot directory.";
+    
     private record DeleteFilesRequest(string SearchPattern);
     
     protected override async Task PerformHandling()

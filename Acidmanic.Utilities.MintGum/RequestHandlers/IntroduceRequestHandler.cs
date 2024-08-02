@@ -7,6 +7,7 @@ internal class IntroduceRequestHandler : RequestHandlerBase
 {
     public override string RoutePath => "";
 
+    public override string Description => "Describes Mint-Gum api in json format. ";
 
     protected override Task PerformHandling()
     {
@@ -31,6 +32,7 @@ internal class IntroduceRequestHandler : RequestHandlerBase
                 Uri = uri,
                 Url = url,
                 Method = handler.Method.Method,
+                Description = descriptor.Description
             });
         }
 
