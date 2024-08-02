@@ -12,6 +12,8 @@ internal class InsomniaRequestHandler : RequestHandlerBase
         var mintGum = Inject<MintGum>();
 
         var folderId = document.AddFolder("Mint-gum").Id;
+        
+        document.BaseEnvironment.Add("mint_uri",mintGum.Configuration.MaintenanceApisBaseUri);
 
         var descriptors = RequestHandlersList.RequestDescriptors;
         

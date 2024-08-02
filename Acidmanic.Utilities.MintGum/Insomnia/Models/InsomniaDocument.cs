@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Acidmanic.Utilities.DataTypes;
 using Newtonsoft.Json;
 
 namespace Acidmanic.Utilities.MintGum.Insomnia.Models;
@@ -27,10 +26,21 @@ public class InsomniaDocument
     public List<object> Resources { get; } = new();
 
     private InsomniaWorkspace _workspace;
+    private InsomniaEnvironment _baseEnvironment;
+
+    private Dictionary<string, InsomniaEnvironment> _environmentsById;
+    private Dictionary<string, InsomniaEnvironment> _environmentsByName;
+
     private Dictionary<string, InsomniaFolder> _foldersById;
     private Dictionary<string, List<InsomniaFolder>> _foldersByName;
+
     private Dictionary<string, InsomniaRequest> _requestsById;
 
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
+    public InsomniaEnvironment BaseEnvironment => _baseEnvironment;
+    
 
     public InsomniaDocument(string workspaceName)
     {
@@ -44,7 +54,18 @@ public class InsomniaDocument
         _workspace.Id = _workspace.CreateId();
 
         Resources.Add(_workspace);
+
+        _baseEnvironment = new InsomniaEnvironment
+        {
+            Name = "Base Environment",
+            ParentId = _workspace.Id,
+        };
+
+        _baseEnvironment.Id = _baseEnvironment.CreateId();
         
+        Resources.Add(_baseEnvironment);
+
+
         _foldersById = new Dictionary<string, InsomniaFolder>();
         _foldersByName = new Dictionary<string, List<InsomniaFolder>>();
         _requestsById = new Dictionary<string, InsomniaRequest>();
@@ -68,11 +89,11 @@ public class InsomniaDocument
         {
             _foldersByName.Add(folderName, new List<InsomniaFolder>());
         }
-        
+
         _foldersByName[folderName].Add(folder);
-        
+
         Resources.Add(folder);
-        
+
         return folder;
     }
 
@@ -97,5 +118,21 @@ public class InsomniaDocument
         Resources.Add(request);
 
         return request;
+    }
+
+    public InsomniaEnvironment AddEnvironment(string name)
+    {
+        var env = new InsomniaEnvironment()
+        {
+            Name = name,
+            ParentId = _workspace.Id
+        };
+
+        env.Id = env.CreateId();
+
+        _environmentsByName[env.Id] = env;
+        _environmentsByName[env.Name] = env;
+
+        return env;
     }
 }
