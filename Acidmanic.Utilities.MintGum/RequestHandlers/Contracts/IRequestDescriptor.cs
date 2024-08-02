@@ -11,4 +11,8 @@ public interface IRequestDescriptor
     string Uri { get; }
     
     string Description { get; } 
+    
+    Type? RequestBodyScheme { get; }
+    
+    
 }
