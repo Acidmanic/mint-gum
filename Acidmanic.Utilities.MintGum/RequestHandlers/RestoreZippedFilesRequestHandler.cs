@@ -1,3 +1,4 @@
+using Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
 using Acidmanic.Utilities.MintGum.Services;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
@@ -9,7 +10,12 @@ internal class RestoreZippedFilesRequestHandler : RequestHandlerBase
     public override string Description =>
         "Will clear the ContentRoot directory, and extract the contents of all the uploaded zipped files into it. " +
         "you can send upload files into this endpoint using Multipart form fields." ;
-    
+
+
+    public RestoreZippedFilesRequestHandler()
+    {
+        BuildScheme( b => b.AddMultipart(MultipartValueType.File,"any-name","path/to/zip-file.zip"));
+    }
     protected override async Task PerformHandling()
     {
         var files = await ReadUploadedFiles();

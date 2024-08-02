@@ -1,3 +1,4 @@
+using Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
 using Acidmanic.Utilities.MintGum.Services;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
@@ -10,6 +11,12 @@ internal class RestoreFilesRequestHandler : RequestHandlerBase
     public override string Description =>
         "Will clear the ContentRoot directory, and write all the uploaded files into it. " +
         "you can send upload files into this endpoint using Multipart form fields." ;
+
+
+    public RestoreFilesRequestHandler()
+    {
+        BuildScheme( b => b.AddMultipart(MultipartValueType.File,"any-name","path/to/file.html"));
+    }
     
     protected override async Task PerformHandling()
     {

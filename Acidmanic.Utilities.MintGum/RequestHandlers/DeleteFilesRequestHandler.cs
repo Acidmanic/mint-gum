@@ -11,6 +11,12 @@ internal class DeleteFilesRequestHandler : RequestHandlerBase
         "Deletes every file and directory matching the given pattern inside the ContentRoot directory.";
     
     private record DeleteFilesRequest(string SearchPattern);
+
+
+    public DeleteFilesRequestHandler()
+    {
+        BuildScheme(b => b.SetJsonBody(typeof(DeleteFilesRequest)));
+    }
     
     protected override async Task PerformHandling()
     {

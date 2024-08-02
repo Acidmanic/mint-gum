@@ -51,7 +51,7 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler, IRequestDescri
     private HttpContext? _context;
 
 
-    private void BuildScheme(Action<BodySchemeBuilder> build)
+    protected void BuildScheme(Action<BodySchemeBuilder> build)
     {
         var builder = new BodySchemeBuilder();
 

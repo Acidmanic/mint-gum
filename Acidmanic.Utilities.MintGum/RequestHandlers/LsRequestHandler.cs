@@ -10,6 +10,12 @@ internal class LsRequestHandler : RequestHandlerBase
     public override string Description => "Returns a list of all files (recursively) inside ContentRoot directory. " +
                                           "Given a search pattern, it will only return matching results.";
 
+
+    public LsRequestHandler()
+    {
+        BuildScheme(b => b.SetJsonBody(typeof(LsRequest)));
+    }
+    
     protected override async Task PerformHandling()
     {
         var request = await ReadRequestBody<LsRequest>();

@@ -12,6 +12,11 @@ internal class ClearRequestHandler : RequestHandlerBase
                                           "And creates a simple default page. " +
                                           "If Content is provided in the request, it will be written into default page file.";
 
+    public ClearRequestHandler()
+    {
+        BuildScheme(b => b.SetJsonBody(typeof(ClearRequest)));
+    }
+    
     protected override async Task PerformHandling()
     {
         var request = await ReadRequestBody<ClearRequest>();

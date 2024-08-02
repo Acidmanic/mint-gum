@@ -9,6 +9,12 @@ internal class RenameRequestHandler : RequestHandlerBase
     public override string Description => "Renames a file or directory.";
 
     private record RenameRequest(string SourcePath, string NewName);
+
+
+    public RenameRequestHandler()
+    {
+        BuildScheme(b => b.SetJsonBody(typeof(RenameRequest)));
+    }
     
     protected override async Task PerformHandling()
     {
