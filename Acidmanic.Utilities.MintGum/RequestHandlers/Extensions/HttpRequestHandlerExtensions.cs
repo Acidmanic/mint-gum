@@ -23,6 +23,8 @@ internal static class HttpRequestHandlerExtensions
         public string Uri { get; }
         
         public string Description { get; }
+        public Dictionary<string, string> Headers { get; } = new();
+        
     }
     
     

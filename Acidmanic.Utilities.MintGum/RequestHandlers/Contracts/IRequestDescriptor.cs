@@ -12,7 +12,7 @@ public interface IRequestDescriptor
     
     string Description { get; } 
     
-    Type? RequestBodyScheme { get; }
     
-    
+    Dictionary<string,string> Headers { get; }
+
 }
