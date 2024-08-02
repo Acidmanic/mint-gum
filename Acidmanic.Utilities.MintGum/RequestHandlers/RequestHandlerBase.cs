@@ -1,71 +1,42 @@
 using System.Net;
 using Acidmanic.Utilities.MintGum.Extensions;
 using Acidmanic.Utilities.MintGum.RequestHandlers.Contracts;
+using Acidmanic.Utilities.MintGum.RequestHandlers.Extensions;
 using Acidmanic.Utilities.NamingConventions;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
-internal abstract class RequestHandlerBase : IHttpRequestHandler
+internal abstract class RequestHandlerBase : IHttpRequestHandler, IRequestDescriptor
 {
     public virtual HttpMethod Method => HttpMethod.Get;
 
-    private readonly string _routePathByClass;
-    public string Name { get; }
+    public string NameKebabCase { get; }
+    public string NameTitleCase { get; }
+
+
+    public string MethodName => Method.Method;
+    
+    public virtual string RoutePath => NameKebabCase;
+
+    public string Uri => RoutePath;
 
     protected record UploadedFile(string FileName, string FormField, byte[] FileData, long Length);
 
 
     public RequestHandlerBase()
     {
-        var convertedName = GetPathByClass(
+        var convertedName = GetType().ReCase(
+            "requesthandler",
             ConventionDescriptor.Standard.Kebab,
-            new ConventionDescriptor
-            {
-                Delimiter = " ",
-                Name = "Title",
-                Separation = Separation.ByDelimiter,
-                PreFix = string.Empty,
-                SegmentCase = i => Case.Capital
-            }
+            ExtraNameConventions.Title
         );
         
-        _routePathByClass = convertedName[0];
+        NameKebabCase = convertedName[0];
         
-        Name = convertedName[1];
+        NameTitleCase = convertedName[1];
     }
 
-    public virtual string RoutePath => _routePathByClass;
-
-    private string[] GetPathByClass(params ConventionDescriptor[] conventions)
-    {
-        var name = GetType().Name;
-        var nameLower = name.ToLower();
-
-        var tag = "requesthandler";
-
-        if (nameLower.StartsWith(tag))
-        {
-            name = name.Substring(tag.Length, name.Length - tag.Length);
-
-            nameLower = name.ToLower();
-        }
-
-        if (nameLower.EndsWith(tag))
-        {
-            name = name.Substring(0, name.Length - tag.Length);
-        }
-
-        var nc = new NamingConvention();
-
-        var parsed = nc.Parse(name);
-
-        if (parsed)
-        {
-            return conventions.Select(c => nc.Render(parsed.Value.Segments, c)).ToArray();
-        }
-
-        return conventions.Select(c => name).ToArray();
-    }
+    
 
     protected abstract Task PerformHandling();
 
@@ -89,6 +60,11 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler
         _context = context;
 
         return PerformHandling();
+    }
+
+    public IRequestDescriptor? GetDescriptor()
+    {
+        return this;
     }
 
 

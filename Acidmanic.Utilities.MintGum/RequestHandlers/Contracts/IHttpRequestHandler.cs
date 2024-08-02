@@ -5,8 +5,8 @@ internal interface IHttpRequestHandler
     HttpMethod Method { get; }
     
     string RoutePath { get; }
-    
-    string Name { get; }
 
     Task Handle(HttpContext context);
+
+    IRequestDescriptor? GetDescriptor();
 }

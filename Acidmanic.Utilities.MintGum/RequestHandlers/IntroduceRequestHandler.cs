@@ -1,4 +1,5 @@
 using Acidmanic.Utilities.MintGum.Extensions;
+using Acidmanic.Utilities.MintGum.RequestHandlers.Extensions;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
@@ -15,6 +16,8 @@ internal class IntroduceRequestHandler : RequestHandlerBase
 
         foreach (var handler in RequestHandlersList.RequestHandlers)
         {
+            var descriptor = handler.GerOrCreateDescriptor();
+            
             var uri = mintGum.Configuration.MaintenanceApisBaseUri.JoinPath(handler.RoutePath);
 
             var url = $"{HttpContext.Request.Scheme}://".JoinPath(
@@ -24,7 +27,7 @@ internal class IntroduceRequestHandler : RequestHandlerBase
 
             apis.Add(new
             {
-                Name = handler.Name,
+                Name = descriptor.NameTitleCase,
                 Uri = uri,
                 Url = url,
                 Method = handler.Method.Method,

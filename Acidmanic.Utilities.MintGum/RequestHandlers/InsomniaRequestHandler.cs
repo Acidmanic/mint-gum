@@ -1,4 +1,3 @@
-using Acidmanic.Utilities.DataTypes;
 using Acidmanic.Utilities.MintGum.Extensions;
 using Acidmanic.Utilities.MintGum.Insomnia.Models;
 
@@ -14,18 +13,20 @@ internal class InsomniaRequestHandler : RequestHandlerBase
 
         var folderId = document.AddFolder("Mint-gum").Id;
 
-        foreach (var handler in RequestHandlersList.RequestHandlers)
+        var descriptors = RequestHandlersList.RequestDescriptors;
+        
+        foreach (var descriptor in descriptors)
         {
-            var uri = mintGum.Configuration.MaintenanceApisBaseUri.JoinPath(handler.RoutePath);
+            var uri = mintGum.Configuration.MaintenanceApisBaseUri.JoinPath(descriptor.Uri);
 
             var url = $"{HttpContext.Request.Scheme}://".JoinPath(
                 HttpContext.Request.Host.Value,
                 mintGum.Configuration.MaintenanceApisBaseUri,
-                handler.RoutePath);
+                descriptor.Uri);
 
-            document.AddRequest(handler.RoutePath,
-                handler.Name, 
-                handler.Method.Method, 
+            document.AddRequest(descriptor.NameKebabCase,
+                descriptor.NameTitleCase, 
+                descriptor.MethodName, 
                 uri, folderId);
 
         }
