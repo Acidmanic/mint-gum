@@ -38,10 +38,13 @@ internal class InsomniaRequestHandler : RequestHandlerBase
 
             requestUrl = requestUrl.Replace("//", "/");
             
-            document.AddRequest(descriptor.NameKebabCase,
+            var request = document.AddRequest(descriptor.NameKebabCase,
                 descriptor.Description, 
                 descriptor.MethodName, 
                 requestUrl, folderId);
+
+            request.Body = descriptor.Scheme.Translate();
+            
 
         }
 

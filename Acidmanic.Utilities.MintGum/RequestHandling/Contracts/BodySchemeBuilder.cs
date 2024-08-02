@@ -65,7 +65,7 @@ public class BodySchemeBuilder
 
     public RequestBodyScheme Build()
     {
-        if (_scheme.MimeType != RequestBodyMimeType.Json || _scheme.MimeType != RequestBodyMimeType.Xml){
+        if (_scheme.MimeType != RequestBodyMimeType.Json && _scheme.MimeType != RequestBodyMimeType.Xml){
             
             _scheme.BodyModelType = null;
         }
