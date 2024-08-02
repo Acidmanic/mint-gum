@@ -24,7 +24,7 @@ internal static class HttpRequestHandlerExtensions
         
         public string Description { get; }
         public Dictionary<string, string> Headers { get; } = new();
-        
+        public RequestBodyScheme Scheme { get; } = RequestBodyScheme.None;
     }
     
     

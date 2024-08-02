@@ -23,6 +23,8 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler, IRequestDescri
     public virtual string Description { get; } = string.Empty;
     
     public Dictionary<string, string> Headers { get; } = new();
+    
+    public RequestBodyScheme Scheme { get; private set; } = RequestBodyScheme.None;
 
     protected record UploadedFile(string FileName, string FormField, byte[] FileData, long Length);
 
@@ -48,6 +50,16 @@ internal abstract class RequestHandlerBase : IHttpRequestHandler, IRequestDescri
 
     private HttpContext? _context;
 
+
+    private void BuildScheme(Action<BodySchemeBuilder> build)
+    {
+        var builder = new BodySchemeBuilder();
+
+        build(builder);
+
+        Scheme = builder.Build();
+    }
+    
     protected HttpContext HttpContext
     {
         get

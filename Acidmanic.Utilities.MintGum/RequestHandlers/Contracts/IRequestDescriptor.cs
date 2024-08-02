@@ -14,5 +14,7 @@ public interface IRequestDescriptor
     
     
     Dictionary<string,string> Headers { get; }
+    
+    RequestBodyScheme Scheme { get; } 
 
 }
