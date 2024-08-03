@@ -11,6 +11,8 @@
   <ItemGroup>
     <PackageReference Include="Acidmanic.Utilities" Version="1.0.22-b06" />
     <PackageReference Include="Acidmanic.Utilities.Reflections" Version="1.0.6-b18" />
+    <PackageReference Include="Microsoft.XmlSerializer.Generator" Version="8.0.0" />
+    
   </ItemGroup>
 
 

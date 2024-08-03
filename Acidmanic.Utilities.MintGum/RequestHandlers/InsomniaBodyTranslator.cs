@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Text;
+using System.Xml.Serialization;
 using Acidmanic.Utilities.MintGum.Insomnia.Models;
 using Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
 using Acidmanic.Utilities.Reflection;
@@ -36,8 +38,10 @@ public static class InsomniaBodyTranslator
         if (scheme.MimeType == RequestBodyMimeType.Xml)
         {
             var instance = Instantiate(scheme.BodyModelType!, descriptor, sp);
-            //TODO Serialize to xml
-            var xml = JsonConvert.SerializeObject(instance);
+
+            using var memoryStream = new MemoryStream();
+            new XmlSerializer(scheme.BodyModelType!).Serialize(memoryStream, instance);
+            var xml = Encoding.Default.GetString(memoryStream.ToArray());
 
             return new
             {
@@ -87,8 +91,8 @@ public static class InsomniaBodyTranslator
                 Name = pair.Name,
                 Type = "text",
                 Description = string.Empty,
-                Value = string.Empty,
-                Text = pair.Value
+                Value = pair.Value,
+                Multiline=false 
             };
         }
 
@@ -100,8 +104,8 @@ public static class InsomniaBodyTranslator
                 Name = pair.Name,
                 Type = pair.Type,
                 Description = string.Empty,
-                Value = string.Empty,
-                Text = "multilineText"
+                Value = pair.Value.Replace("\n","\\n"),
+                Multiline=true
             };
         }
 
