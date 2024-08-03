@@ -19,7 +19,7 @@
     <!-- NuGet -->
     <Id>Acidmanic.Utilities.MintGum</Id>
     <PackageId>Acidmanic.Utilities.MintGum</PackageId>
-    <Version>1.0.0-b02</Version>
+    <Version>1.0.0-b03</Version>
     <Authors>Mani Moayedi</Authors>
     <Company>Acidmanic</Company>
     <PackageIcon>Graphics/icon.png</PackageIcon>
