@@ -1,4 +1,5 @@
 using Acidmanic.Utilities.MintGum.RequestHandling;
+using Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
 using Acidmanic.Utilities.MintGum.Services;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
@@ -10,7 +11,7 @@ internal class DeleteFilesRequestHandler : RequestHandlerBase
     public override string Description =>
         "Deletes every file and directory matching the given pattern inside the ContentRoot directory.";
     
-    private record DeleteFilesRequest(string SearchPattern);
+    private record DeleteFilesRequest([SuggestedValue("/styles/*.old.css")]string SearchPattern);
 
 
     public DeleteFilesRequestHandler()

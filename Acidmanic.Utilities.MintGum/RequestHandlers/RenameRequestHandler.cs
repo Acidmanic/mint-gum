@@ -1,4 +1,5 @@
 using Acidmanic.Utilities.MintGum.RequestHandling;
+using Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
 using Acidmanic.Utilities.MintGum.Services;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
@@ -9,7 +10,7 @@ internal class RenameRequestHandler : RequestHandlerBase
 
     public override string Description => "Renames a file or directory.";
 
-    private record RenameRequest(string SourcePath, string NewName);
+    private record RenameRequest([SuggestedValue("/assets/logo-128.png")]string SourcePath,[SuggestedValue("logo.png")] string NewName);
 
 
     public RenameRequestHandler()

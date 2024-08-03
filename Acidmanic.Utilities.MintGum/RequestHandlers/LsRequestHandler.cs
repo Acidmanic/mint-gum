@@ -1,11 +1,12 @@
 using Acidmanic.Utilities.MintGum.RequestHandling;
+using Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
 using Acidmanic.Utilities.MintGum.Services;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
 internal class LsRequestHandler : RequestHandlerBase
 {
-    private record LsRequest(string? SearchPattern);
+    private record LsRequest([SuggestedValue("/assets")]string? SearchPattern);
 
     public override string Description => "Returns a list of all files (recursively) inside ContentRoot directory. " +
                                           "Given a search pattern, it will only return matching results.";
