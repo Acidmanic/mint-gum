@@ -1,6 +1,7 @@
 namespace Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
 
-public interface ISuggestedValueFactory<T>
+
+public interface ISuggestedValueFactory
 {
-    T Suggest(IRequestDescriptor descriptor);
+    object? Suggest(IRequestDescriptor descriptor);
 }

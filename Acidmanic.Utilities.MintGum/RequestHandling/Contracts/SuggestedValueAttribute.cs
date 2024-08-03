@@ -16,9 +16,9 @@ public class SuggestedValueAttribute:Attribute
 
     public SuggestedValueAttribute(Type factoryType)
     {
-        if (factoryType.IsAbstract || !TypeCheck.IsSpecificOf(factoryType, typeof(ISuggestedValueFactory<>)))
+        if (factoryType.IsAbstract || !TypeCheck.IsSpecificOf(factoryType, typeof(ISuggestedValueFactory)))
         {
-            throw new Exception($"Factory Type Must be an concrete implementation of {typeof(ISuggestedValueFactory<>).Name}");
+            throw new Exception($"Factory Type Must be an concrete implementation of {nameof(ISuggestedValueFactory)}");
         }
 
         Strategy = SuggestedValueStrategy.DiRegisteredFactory;
@@ -37,14 +37,17 @@ public class SuggestedValueAttribute:Attribute
         Type = typeof(object);
     }
 
-    public T? SuggestValue<T>(IServiceProvider sp,IRequestDescriptor requestDescriptor) where T : class
+    public T? SuggestValue<T>(IRequestDescriptor requestDescriptor,IServiceProvider sp) where T : class
+        => SuggestValue(requestDescriptor,sp) as T;
+    
+    public object? SuggestValue(IRequestDescriptor requestDescriptor,IServiceProvider sp)
     {
         if (Strategy == SuggestedValueStrategy.FixedValue)
         {
-            return Value as T;
+            return Value;
         }
 
-        var factory = sp.GetService(Type) as ISuggestedValueFactory<T>;
+        var factory = sp.GetService(Type) as ISuggestedValueFactory;
 
         if (factory is { } f) return f.Suggest(requestDescriptor);
         
@@ -52,11 +55,11 @@ public class SuggestedValueAttribute:Attribute
     }
 
 
-    public T? SuggestValue<T>(IRequestDescriptor requestDescriptor) where T : class
+    public object? SuggestValue(IRequestDescriptor requestDescriptor)
     {
         if (Strategy == SuggestedValueStrategy.FixedValue)
         {
-            return Value as T;
+            return Value;
         }
 
         return default;

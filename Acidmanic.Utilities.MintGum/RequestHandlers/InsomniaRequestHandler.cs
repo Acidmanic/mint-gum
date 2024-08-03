@@ -43,8 +43,7 @@ internal class InsomniaRequestHandler : RequestHandlerBase
                 descriptor.MethodName, 
                 requestUrl, folderId);
 
-            request.Body = descriptor.Scheme.Translate();
-            
+            request.Body = descriptor.Translate(HttpContext.RequestServices);
 
         }
 

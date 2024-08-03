@@ -10,17 +10,19 @@ namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
 public static class InsomniaBodyTranslator
 {
-    public static object Translate(this RequestBodyScheme scheme)
+    public static object Translate(this IRequestDescriptor descriptor, IServiceProvider sp)
     {
+        var scheme = descriptor.Scheme;
+
         if (scheme.MimeType == RequestBodyMimeType.None) return new object();
 
         if (scheme.MimeType == RequestBodyMimeType.Json)
         {
-            var instance = Instantiate(scheme.BodyModelType!);
+            var instance = Instantiate(scheme.BodyModelType!, descriptor, sp);
 
             var json = JsonConvert.SerializeObject(instance, new JsonSerializerSettings()
             {
-                Formatting =Formatting.Indented,
+                Formatting = Formatting.Indented,
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
 
@@ -33,7 +35,7 @@ public static class InsomniaBodyTranslator
 
         if (scheme.MimeType == RequestBodyMimeType.Xml)
         {
-            var instance = Instantiate(scheme.BodyModelType!);
+            var instance = Instantiate(scheme.BodyModelType!, descriptor, sp);
             //TODO Serialize to xml
             var xml = JsonConvert.SerializeObject(instance);
 
@@ -107,7 +109,7 @@ public static class InsomniaBodyTranslator
     }
 
 
-    private static object Instantiate(Type type)
+    private static object Instantiate(Type type, IRequestDescriptor descriptor, IServiceProvider sp)
     {
         var evaluator = new ObjectEvaluator(type);
 
@@ -115,12 +117,34 @@ public static class InsomniaBodyTranslator
         {
             var node = evaluator.Map.NodeByKey(key);
 
-            var value = DefaultValue(node.Type);
+            var value = DefaultValue(node, descriptor, sp);
 
-            evaluator.Write(key,value);
+            evaluator.Write(key, value);
         }
 
         return evaluator.RootObject;
+    }
+
+
+    private static object? DefaultValue(AccessNode node, IRequestDescriptor descriptor, IServiceProvider sp)
+    {
+        var att = node.PropertyAttributes.FirstOrDefault(attribute => attribute is SuggestedValueAttribute)
+            as SuggestedValueAttribute;
+
+        if (att is { } a)
+        {
+            if (a.Strategy == SuggestedValueStrategy.FixedValue)
+            {
+                return a.SuggestValue(descriptor);
+            }
+
+            if (a.Strategy == SuggestedValueStrategy.DiRegisteredFactory)
+            {
+                return a.SuggestValue(descriptor, sp);
+            }
+        }
+
+        return DefaultValue(node.Type);
     }
 
     private static object? DefaultValue(Type type)
