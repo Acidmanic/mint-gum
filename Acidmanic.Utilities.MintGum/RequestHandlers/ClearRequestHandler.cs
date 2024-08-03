@@ -1,11 +1,14 @@
 using Acidmanic.Utilities.MintGum.RequestHandling;
+using Acidmanic.Utilities.MintGum.RequestHandling.Contracts;
 using Acidmanic.Utilities.MintGum.Services;
 
 namespace Acidmanic.Utilities.MintGum.RequestHandlers;
 
 internal class ClearRequestHandler : RequestHandlerBase
 {
-    private record ClearRequest(string? Content);
+    private const string SuggestedHttp = "<html><head><title>Minty!</title></head><body><h2>Under Construction</h2></body></html>";
+    
+    private record ClearRequest([SuggestedValue(SuggestedHttp)] string? Content);
 
     public override HttpMethod Method => HttpMethod.Delete;
 
